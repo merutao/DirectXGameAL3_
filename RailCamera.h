@@ -12,7 +12,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Intialize(Vector3 position, Vector3 rotation);
+	void Initialize(Vector3 position, Vector3 rotation);
 
 	/// <summary>
 	/// 更新

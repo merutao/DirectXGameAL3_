@@ -4,6 +4,7 @@
 #include <cassert>
 #include <fstream>
 
+
 GameScene::GameScene() {}
 
 GameScene::~GameScene() {
@@ -16,6 +17,7 @@ GameScene::~GameScene() {
 	for (Enemy* enemy : enemys_) {
 		delete enemy;
 	}
+
 }
 
 void GameScene::Initialize() {
@@ -26,12 +28,10 @@ void GameScene::Initialize() {
 
 	// テクスチャ
 
-	/*textureHandle_ = TextureManager::Load("uvChecker.png");
-	sprite_ = Sprite::Create(textureHandle_, {100, 50});
-	viewProjection_.Initialize();*/
-
+	
 	// モデル
 	textureHandle_ = TextureManager::Load("uvChecker.png");
+	
 	model_ = Model::Create();
 
 	// ビュープロジェクション
@@ -40,6 +40,9 @@ void GameScene::Initialize() {
 
 	// 3Dモデルの生成
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
+
+	//
+	
 
 	// レティクルのテクスチャ
 	TextureManager::Load("reticle.png");
@@ -54,6 +57,10 @@ void GameScene::Initialize() {
 	// 自キャラの生成
 	player_ = new Player();
 
+	Time = 1300;
+	TFlag = 0;
+	Count = 5;
+
 	Vector3 playerPosition(0, 0, 50);
 	// 自キャラの初期化
 	player_->Initialize(model_, textureHandle_, playerPosition);
@@ -61,7 +68,7 @@ void GameScene::Initialize() {
 	// レイルカメラの生成
 	railCamera_ = new RailCamera();
 	// レイルカメラの初期化
-	railCamera_->Intialize({0.0f,0.0f,0.0f}, {0.0f, 0.0f, 0.0f});
+	railCamera_->Initialize({0.0f,0.0f,0.0f}, {0.0f, 0.0f, 0.0f});
 
 	// 天球の生成
 	skydome_ = new Skydome;
@@ -85,7 +92,7 @@ void GameScene::Update() {
 	// レールカメラの更新
 	railCamera_->Update();
 
-	UpdeteEnemyPopCommand();
+	UpdateEnemyPopCommand();
 
 	// 自キャラの更新
 	player_->Update(viewProjection_);
@@ -162,7 +169,7 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに背景スプライトの描画処理を追加できる
 	/// </summary>
-
+	
 	// スプライト描画後処理
 	Sprite::PostDraw();
 	// 深度バッファクリア
@@ -201,9 +208,11 @@ void GameScene::Draw() {
 
 	// 前景スプライト描画前処理
 	Sprite::PreDraw(commandList);
+	
 
 	player_->DrawUI();
 
+	
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
@@ -243,6 +252,11 @@ void GameScene::CheckAllCollision() {
 			player_->OnCollision();
 			// 敵弾の衝突時コールバックを呼び出す
 			bullet->OnCollision();
+			Count -= 1;
+			if (Count <= 0)
+			{
+				Over();
+			}
 		}
 	}
 
@@ -328,7 +342,7 @@ void GameScene::LoadEnemyPopData() {
 	file.close();
 }
 
-void GameScene::UpdeteEnemyPopCommand() {
+void GameScene::UpdateEnemyPopCommand() {
 
 	// 待機処理
 	if (standFlag) {
@@ -404,3 +418,68 @@ void GameScene::EnemyOccurrence(Vector3 position, Vector3 velocity) {
 	// リストに登録
 	enemys_.push_back(enemy);
 }
+
+
+
+
+
+
+void GameScene::Timer() { 
+
+	if (TFlag == 0) {
+		Time--;
+	}
+	if (Time <= 0) {
+		TFlag = 1;
+	}
+	if (TFlag == 1)
+	{
+		Clear();
+	}
+}
+
+void GameScene::Clear() {
+
+	NowGameScene = NowGameScene::Clear;
+	
+}
+
+void GameScene::Over()
+{ 
+	NowGameScene = NowGameScene::Over;
+	
+}
+
+void GameScene::TitleProc() { 
+	if (input_->TriggerKey(DIK_SPACE)) {
+	
+		NowGameScene = NowGameScene::Play;
+
+		return;
+	}
+}
+
+void GameScene::ClearProc()
+{
+	
+	if (input_->TriggerKey(DIK_SPACE)) {
+		Initialize();
+		NowGameScene = NowGameScene::Title;
+
+
+	}
+}
+
+void GameScene::OverProc()
+{
+	
+	if (input_->TriggerKey(DIK_SPACE)) {
+		Initialize();
+		NowGameScene = NowGameScene::Title;
+
+	
+	}
+}
+
+void GameScene::TitleDraw() {  }
+

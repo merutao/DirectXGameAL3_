@@ -6,6 +6,9 @@
 #include "PrimitiveDrawer.h"
 #include "TextureManager.h"
 #include "WinApp.h"
+#include "Title.h"
+#include "Clear.h"
+#include "Over.h"
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
@@ -17,6 +20,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	AxisIndicator* axisIndicator = nullptr;
 	PrimitiveDrawer* primitiveDrawer = nullptr;
 	GameScene* gameScene = nullptr;
+	Title* title = nullptr;
+	Clear* clear = nullptr;
+	Over* over = nullptr;
+
+	
 
 	// ゲームウィンドウの作成
 	win = WinApp::GetInstance();
@@ -59,7 +67,23 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// ゲームシーンの初期化
 	gameScene = new GameScene();
+
 	gameScene->Initialize();
+
+	title = new Title();
+
+	title->Initialize();
+
+	clear = new Clear();
+
+	clear->Initialize();
+
+	over = new Over();
+
+	over->Initialize();
+
+
+	gameScene->NowGameScene = GameScene::NowGameScene::Title;
 
 	// メインループ
 	while (true) {
@@ -68,29 +92,65 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			break;
 		}
 
-		// ImGui受付開始
-		imguiManager->Begin();
-		// 入力関連の毎フレーム処理
-		input->Update();
-		// ゲームシーンの毎フレーム処理
-		gameScene->Update();
+		
+
+
+		//ここからゲーム
+		{
+			// ImGui受付開始
+			imguiManager->Begin();
+			// 入力関連の毎フレーム処理
+			input->Update();
+			// ゲームシーンの毎フレーム処理
+			gameScene->Update();
+			// ImGui受付終了
+			imguiManager->End();
+			// 描画開始
+			dxCommon->PreDraw();
+
+			switch (gameScene->NowGameScene) {
+			case GameScene::NowGameScene::Title:
+				gameScene->TitleProc();
+				title->Draw();
+			default:
+				break;
+			case GameScene::NowGameScene::Play:
+				
+				// ゲームシーンの描画
+				gameScene->Draw();
+				// ImGui描画
+				imguiManager->Draw();
+				gameScene->Timer();
+				
+				break;
+			case GameScene::NowGameScene::Clear:
+				gameScene->ClearProc();
+				clear->Draw();
+				break;
+			case GameScene::NowGameScene::Over:
+				gameScene->OverProc();
+				over->Draw();
+				break;
+			}
+			
+		}
+		
+
+		
 		// 軸表示の更新
 		axisIndicator->Update();
-		// ImGui受付終了
-		imguiManager->End();
 
-		// 描画開始
-		dxCommon->PreDraw();
-		// ゲームシーンの描画
-		gameScene->Draw();
 		// 軸表示の描画
 		axisIndicator->Draw();
+
 		// プリミティブ描画のリセット
 		primitiveDrawer->Reset();
-		// ImGui描画
-		imguiManager->Draw();
+		
+		
+
 		// 描画終了
 		dxCommon->PostDraw();
+
 	}
 
 	// 各種解放

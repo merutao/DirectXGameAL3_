@@ -1,7 +1,7 @@
-﻿//Titleのヘッダファイル
+﻿// Titleのヘッダファイル
 #pragma once
 
-//ヘッダファイル読み込み
+// ヘッダファイル読み込み
 #include "Audio.h"
 #include "DirectXCommon.h"
 #include "Input.h"
@@ -11,15 +11,13 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 
-//class
-class Title
-{
+// class
+class Over {
 public:
 	/// <summary>
 	/// delete
 	/// </summary>
-	~Title();
-
+	~Over();
 
 	/// <summary>
 	/// 初期化
@@ -40,9 +38,8 @@ private:
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
-	Sprite* title_ = nullptr;
+	Sprite* over_ = nullptr;
 
-	uint32_t textureHandle1_ = 0;
-	uint32_t textureHandle2_ = 0;
+	
 	uint32_t textureHandle3_ = 0;
 };

@@ -44,6 +44,8 @@ public:
 
 
 private:
+	
+	int PFlag = 1;
 	WorldTransform worldTransform_;
 	Model* model_ = nullptr;
 	Model* reticle = nullptr;

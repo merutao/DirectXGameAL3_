@@ -4,7 +4,7 @@
 /// <summary>
 /// 初期化
 /// </summary>
-void RailCamera::Intialize(Vector3 position, Vector3 rotation) {
+void RailCamera::Initialize(Vector3 position, Vector3 rotation) {
 	
 
 	//// X,Y,Z方向の平行移動を設定

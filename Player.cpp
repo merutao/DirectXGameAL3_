@@ -4,6 +4,7 @@
 #include "iostream"
 #include <cassert>
 
+
 using namespace std;
 
 void Player::Initialize(Model* model, uint32_t textureHandle, Vector3 position) {
@@ -328,6 +329,10 @@ Vector3 Player::GetWorldPosition() {
 
 void Player::SetParent(const WorldTransform* parent) { worldTransform_.parent_ = parent; }
 
-void Player::OnCollision() { isDead_ = true; }
+
+void Player::OnCollision() 
+{ 
+
+}
 
 void Player::DrawUI() { sprite2DReticle_->Draw(); }

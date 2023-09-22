@@ -1,34 +1,27 @@
-﻿//タイトルのソースファイル
+﻿//クリアのソースファイル
 
-//ヘッダファイル読み込み
-#include "Title.h"
+// ヘッダファイル読み込み
+#include "Clear.h"
 
-//delete
-Title::~Title()
-{ delete title_; }
+// delete
+Clear::~Clear() { delete clear_; }
 
 /// 初期化
-void Title::Initialize()
-{
+void Clear::Initialize() {
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 
-	textureHandle1_ = TextureManager::Load("Title.png");
-	
-	title_ = Sprite::Create(textureHandle1_, {640.0f, 360.0f}, {1.0f, 1.0f, 1.0f, 1}, {0.5f, 0.5f});
+	textureHandle2_ = TextureManager::Load("Clear.png");
 
+	clear_ = Sprite::Create(textureHandle2_, {640.0f, 360.0f}, {1.0f, 1.0f, 1.0f, 1}, {0.5f, 0.5f});
 }
 
 /// 更新
-void Title::Update() 
-{
+void Clear::Update() {}
 
-}
-
-///描画
-void Title::Draw() 
-{
+/// 描画
+void Clear::Draw() {
 	// コマンドリストの取得
 	ID3D12GraphicsCommandList* commandList = dxCommon_->GetCommandList();
 
@@ -40,12 +33,11 @@ void Title::Draw()
 	/// ここに背景スプライトの描画処理を追加できる
 	/// </summary>
 
-	title_->Draw();
-	
+	clear_->Draw();
+
 	// スプライト描画後処理
 	Sprite::PostDraw();
 	// 深度バッファクリア
 	dxCommon_->ClearDepthBuffer();
 #pragma endregion
-
 }

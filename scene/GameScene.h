@@ -13,8 +13,8 @@
 #include "Enemy.h"
 #include "skydome.h"
 #include "RailCamera.h"
-#include "Title.h"
 #include <sstream>
+#include "Title.h"
 
 /// <summary>
 /// ゲームシーン
@@ -60,33 +60,60 @@ public: // メンバ関数
 	/// <summary>
 	/// 敵発生コマンドの更新
 	/// </summary>
-	void UpdeteEnemyPopCommand();
+	void UpdateEnemyPopCommand();
 
 
 	void EnemyOccurrence(Vector3 position, Vector3 velocity);
+
+	void Clear();
+
+	void Timer();
+
+	void Over();
+
+	void TitleProc();
+
+	void ClearProc();
+
+	void OverProc();
+
+	void TitleDraw();
+	enum class NowGameScene {
+		Title, // タイトル
+		Play,  // プレイシーン
+		Clear, // クリアシーン
+		Over,  // ゲームオーバーシーン
+	};
+
+	enum NowGameScene NowGameScene;
+
 
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
+	Title* title_ = nullptr;
 	uint32_t textureHandle_ = 0;
+	
 	uint32_t textureHandleModel_ = 0;
-	uint32_t textureHandleTitle_ = 0;
 	float inputFloat3[3] = {0, 0, 0};
 	void CheckAllCollision();
+	int Count = 5;
 
 	
 	//Sprite* sprite_ = nullptr;
 	Model* model_ = nullptr;
 	Model* modelSkydome_ = nullptr;
-
 	Player* player_ = nullptr;
 	ViewProjection viewProjection_;
 	Enemy* enemy_ = nullptr;
 	Skydome* skydome_ = nullptr;
 	RailCamera* railCamera_ = nullptr; 
 	EnemyBullet* enemyBullet_ = nullptr;
-	Title* title_ = nullptr;
+
+	
+
+	
 
 
 	// 弾
@@ -98,6 +125,9 @@ private: // メンバ変数
 
 	int standFlag = false;
 	int standTime = 0;
+
+	int Time = 1000;
+	int TFlag = 0;
 
 	/// <summary>
 	/// ゲームシーン用
