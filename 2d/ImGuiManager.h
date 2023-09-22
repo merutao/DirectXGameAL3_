@@ -2,7 +2,9 @@
 
 #include "DirectXCommon.h"
 #include "WinApp.h"
+#ifdef _DEBUG
 #include <imgui.h>
+#endif
 
 class ImGuiManager {
 public:
@@ -10,7 +12,13 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(WinApp* winApp, DirectXCommon* dxCommon);
+	void Initialize(
+#ifdef _DEBUG
+
+
+		WinApp* winApp, DirectXCommon* dxCommon
+#endif
+	);
 
 	/// <summary>
 	/// 終了

@@ -1,10 +1,12 @@
 #include "WinApp.h"
-
-#include <imgui_impl_win32.h>
 #include <string>
 
+#ifdef _DEBUG
+#include <imgui_impl_win32.h>
 extern IMGUI_IMPL_API LRESULT
     ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+#endif
+
 
 namespace {
 
@@ -34,9 +36,12 @@ WinApp* WinApp::GetInstance() {
 LRESULT WinApp::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 	WinApp* app = reinterpret_cast<WinApp*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
 
+#ifdef _DEBUG
+
+
 	if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam))
 		return true;
-
+#endif
 	// メッセージで分岐
 	switch (msg) {
 	case WM_DESTROY:        // ウィンドウが破棄された

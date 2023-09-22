@@ -106,30 +106,31 @@ void GameScene::Update() {
 	for (EnemyBullet* bullet : enemyBullets_) {
 		bullet->Update();
 	}
-
-#ifdef _DEBUG
-	if (input_->TriggerKey(DIK_1) && isDebugCameraActive_ == 0) {
-		isDebugCameraActive_ = 1;
-	} else if (input_->TriggerKey(DIK_1) && isDebugCameraActive_ == 1) {
-		isDebugCameraActive_ = 0;
-	}
-#endif
-
-	// カメラの処理
-	if (isDebugCameraActive_ == 1) {
-		// デバックカメラの更新
-		debugCamera_->Update();
-		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
-		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
+//
+//#ifdef _DEBUG
+//	if (input_->TriggerKey(DIK_1) && isDebugCameraActive_ == 0) {
+//		isDebugCameraActive_ = 1;
+//	} else if (input_->TriggerKey(DIK_1) && isDebugCameraActive_ == 1) {
+//		isDebugCameraActive_ = 0;
+//	}
+//#endif
+//
+//	// カメラの処理
+//	if (isDebugCameraActive_ == 1) {
+//		// デバックカメラの更新
+//		debugCamera_->Update();
+//		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
+//		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
+//
 
 		// ビュープロジェクション行列の転送
 		viewProjection_.TransferMatrix();
-	} else {
+	
 		viewProjection_.matView = railCamera_->GetViewProjection().matView;
 		viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
 		// ビュープロジェクション行列の更新と転送
 		viewProjection_.TransferMatrix();
-	}
+	
 
 	// 軸方向の表示を有効にする
 	AxisIndicator::GetInstance()->SetVisible(true);
@@ -451,8 +452,9 @@ void GameScene::Over()
 }
 
 void GameScene::TitleProc() { 
+	Initialize();
 	if (input_->TriggerKey(DIK_SPACE)) {
-	
+		
 		NowGameScene = NowGameScene::Play;
 
 		return;
@@ -461,9 +463,9 @@ void GameScene::TitleProc() {
 
 void GameScene::ClearProc()
 {
-	
+	Initialize();
 	if (input_->TriggerKey(DIK_SPACE)) {
-		Initialize();
+		
 		NowGameScene = NowGameScene::Title;
 
 
@@ -472,9 +474,9 @@ void GameScene::ClearProc()
 
 void GameScene::OverProc()
 {
-	
+	Initialize();
 	if (input_->TriggerKey(DIK_SPACE)) {
-		Initialize();
+		
 		NowGameScene = NowGameScene::Title;
 
 	

@@ -37,8 +37,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 #pragma region 汎用機能初期化
 	// ImGuiの初期化
 	ImGuiManager* imguiManager = ImGuiManager::GetInstance();
+#ifdef _DEBUG
 	imguiManager->Initialize(win, dxCommon);
-
+#endif
 	// 入力の初期化
 	input = Input::GetInstance();
 	input->Initialize();
@@ -99,12 +100,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		{
 			// ImGui受付開始
 			imguiManager->Begin();
+			
 			// 入力関連の毎フレーム処理
 			input->Update();
 			// ゲームシーンの毎フレーム処理
 			gameScene->Update();
+			
 			// ImGui受付終了
 			imguiManager->End();
+			
 			// 描画開始
 			dxCommon->PreDraw();
 
@@ -115,6 +119,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			default:
 				break;
 			case GameScene::NowGameScene::Play:
+				
 				
 				// ゲームシーンの描画
 				gameScene->Draw();

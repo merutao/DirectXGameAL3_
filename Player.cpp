@@ -80,13 +80,15 @@ void Player::Update(ViewProjection& viewProjection) {
 	worldTransform_.translation_.z += move.z;
 
 	worldTransform_.UpdateMatrix();
-
+#ifdef _DEBUG
 	// キャラクターの座標を画面表示する処理
 	ImGui::Begin("Debug1");
 	float playerPos[] = {
 	    worldTransform_.translation_.x, worldTransform_.translation_.y,
 	    worldTransform_.translation_.z};
 	ImGui::SliderFloat3("PlayerPos", playerPos, 0, 1280);
+
+
 
 	// 処理のままだとSilderFloat3でplayerPosの値を変えているので実際の座標(translation)が
 	// 変わっていないのでここで変更する
@@ -95,7 +97,7 @@ void Player::Update(ViewProjection& viewProjection) {
 	worldTransform_.translation_.z = playerPos[2];
 
 	ImGui::End();
-
+#endif
 	Rotate();
 
 	// 時機のワールド座標から3Dレティクルのワールド座標を計算
@@ -183,6 +185,8 @@ void Player::Update(ViewProjection& viewProjection) {
 	     Add(posNear, Multiply(kDistanceTestObject, mouseDirection));
 
 	 worldTransform3DReticle_.UpdateMatrix();
+#ifdef _DEBUG
+	
 
 	ImGui::Begin("Player");
 	// ImGui::Text("2DReeticle:(%f,%f)",sprite)
@@ -192,7 +196,7 @@ void Player::Update(ViewProjection& viewProjection) {
 	    "3Deticle:(%+.2f,%+.2f,%+.2f)", worldTransform3DReticle_.translation_.x,
 	    worldTransform3DReticle_.translation_.y, worldTransform3DReticle_.translation_.z);
 	ImGui::End();
-
+#endif
 #pragma endregion
 
 #pragma region
